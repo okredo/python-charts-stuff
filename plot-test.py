@@ -65,7 +65,7 @@ def do_csv_to_chart(csvfilename):
     	with open(csvfilename, 'r') as openedFile :
             for line in openedFile :
                 tab = line.split(',')
-                print tab
+                print tab # debug purposes
                 OY.append(int(tab[1]))
                 OX.append(str(tab[0]))
     except IOError :
@@ -74,16 +74,26 @@ def do_csv_to_chart(csvfilename):
     print OX
     print OY
 
-    fig = plt.figure()
-
+    fig = plt.figure(facecolor='#232323')
+   
     width = .75
     ind = np.arange(len(OY))
-    plt.bar(ind, OY)
+    barlist = plt.bar(ind, OY)
+    for bar in barlist:
+        bar.set_color('white')
+
+    label = plt.ylabel("Dates")
+    label.set_color("white")
+    label = plt.xlabel("Commits")
+    label.set_color("white")
+    [i.set_color("white") for i in plt.gca().get_xticklabels()]
+    [i.set_color("white") for i in plt.gca().get_yticklabels()]
+
     plt.xticks(ind + width / 2, OX)
 
     fig.autofmt_xdate()
 
-    plt.savefig("chart.pdf")
+    plt.savefig("chart.pdf", facecolor=fig.get_facecolor(), transparent=True)
 
 ## html
 
